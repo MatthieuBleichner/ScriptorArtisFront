@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import "./i18n/config";
 import Column from "./Column";
 import { columns } from "./initialData";
 

@@ -1,5 +1,6 @@
 import React from "react";
 import Task from "./Task";
+import { useTranslation } from "react-i18next";
 
 interface Data {
   id: string;
@@ -12,11 +13,13 @@ interface ColumnProps {
 }
 
 function Column({ data }: ColumnProps): JSX.Element {
+  const { t } = useTranslation();
   return (
     <div style={{ margin: 8, border: "1px solid lightgrey", borderRadius: 2 }}>
       {" "}
       {/* Container */}
-      <h3 style={{ padding: 8 }}> {data.title} </h3> {/* Title */}
+      <h3 style={{ padding: 8 }}> {t(data.title)} </h3>
+      {/* Title */}
       <div style={{ padding: 8 }}>
         {" "}
         {/* TaskList */}
