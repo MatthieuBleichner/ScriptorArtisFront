@@ -1,6 +1,8 @@
 import React from "react";
 import Task from "./Task";
 import { useTranslation } from "react-i18next";
+import { Droppable } from "react-beautiful-dnd";
+import styled from "styled-components";
 
 interface Data {
   id: string;
@@ -12,22 +14,35 @@ interface ColumnProps {
   data: Data;
 }
 
+const Container = styled.div`
+  margin: 8px;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+`;
+const Title = styled.h3`
+  padding: 8px;
+`;
+const TaskList = styled.div`
+  padding: 8px;
+`;
+
 function Column({ data }: ColumnProps): JSX.Element {
   const { t } = useTranslation();
   return (
-    <div style={{ margin: 8, border: "1px solid lightgrey", borderRadius: 2 }}>
-      {" "}
-      {/* Container */}
-      <h3 style={{ padding: 8 }}> {t(data.title)} </h3>
+    <Container>
+      <Title> {t(data.title)} </Title>
       {/* Title */}
-      <div style={{ padding: 8 }}>
-        {" "}
-        {/* TaskList */}
-        {data.taskIds.map((taskId) => (
-          <Task id={taskId} key={taskId} />
-        ))}
-      </div>
-    </div>
+      <Droppable droppableId={data.id}>
+        {(provided) => (
+          <TaskList ref={provided.innerRef} {...provided.droppableProps}>
+            {data.taskIds.map((taskId, index) => (
+              <Task id={taskId} key={taskId} index={index} />
+            ))}
+            {provided.placeholder}
+          </TaskList>
+        )}
+      </Droppable>
+    </Container>
   );
 }
 
