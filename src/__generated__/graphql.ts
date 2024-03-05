@@ -41,6 +41,14 @@ export type MutationUpdateTaskArgs = {
   input?: InputMaybe<UpdateTaskInput>;
 };
 
+export enum Priority {
+  P0 = 'P0',
+  P1 = 'P1',
+  P2 = 'P2',
+  P3 = 'P3',
+  P4 = 'P4'
+}
+
 export type Query = {
   __typename?: 'Query';
   /** List of all Tasks of this project. */
@@ -54,13 +62,18 @@ export type Query = {
 };
 
 
+export type QueryFeaturedTasksArgs = {
+  filter?: InputMaybe<TaskFilters>;
+};
+
+
 export type QueryTaskArgs = {
   id: Scalars['Int']['input'];
 };
 
 
 export type QueryTasksByStateArgs = {
-  id: Scalars['Int']['input'];
+  filters?: InputMaybe<TaskFiltersByState>;
 };
 
 /** Define the status of a story to be done Todo, In Progress, Done */
@@ -79,16 +92,40 @@ export type State = {
 /** Define a story to be done */
 export type Task = {
   __typename?: 'Task';
+  /** Due date of this task */
+  date?: Maybe<Scalars['String']['output']>;
   /** The description of the task */
   description?: Maybe<Scalars['String']['output']>;
   /** The id of the task */
   id: Scalars['Int']['output'];
   /** Who is the owner of this task */
   owner?: Maybe<User>;
+  /** Priority of this task */
+  priority?: Maybe<Scalars['String']['output']>;
   /** The state of the task - ToDo, OnGoing, Done */
   state: Scalars['Int']['output'];
   /** The title of the task */
   title: Scalars['String']['output'];
+};
+
+export type TaskFilters = {
+  date?: InputMaybe<Scalars['String']['input']>;
+  ownerId?: InputMaybe<Scalars['Int']['input']>;
+  priority?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type TaskFiltersByState = {
+  date?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  ownerId?: InputMaybe<Scalars['Int']['input']>;
+  priority?: InputMaybe<Scalars['String']['input']>;
+  stateId: Scalars['Int']['input'];
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type TasksInput = {
+  filter?: InputMaybe<TaskFilters>;
 };
 
 export type User = {
@@ -106,8 +143,10 @@ export type User = {
 };
 
 export type CreateTaskInput = {
+  date?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   ownerId?: InputMaybe<Scalars['Int']['input']>;
+  priority?: InputMaybe<Priority>;
   state?: InputMaybe<Scalars['Int']['input']>;
   title: Scalars['String']['input'];
 };
@@ -117,9 +156,11 @@ export type DeleteTaskInput = {
 };
 
 export type UpdateTaskInput = {
+  date?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['Int']['input'];
   ownerId?: InputMaybe<Scalars['Int']['input']>;
+  priority?: InputMaybe<Priority>;
   state?: InputMaybe<Scalars['Int']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -130,7 +171,7 @@ export type GetStatesQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetStatesQuery = { __typename?: 'Query', states?: Array<{ __typename?: 'State', id: number, title: string, index: number }> | null };
 
 export type TasksByStateQueryVariables = Exact<{
-  id: Scalars['Int']['input'];
+  filters: TaskFiltersByState;
 }>;
 
 
@@ -145,5 +186,5 @@ export type TaskQuery = { __typename?: 'Query', task?: { __typename?: 'Task', id
 
 
 export const GetStatesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetStates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"states"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"index"}}]}}]}}]} as unknown as DocumentNode<GetStatesQuery, GetStatesQueryVariables>;
-export const TasksByStateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"tasksByState"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tasksByState"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<TasksByStateQuery, TasksByStateQueryVariables>;
+export const TasksByStateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"tasksByState"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filters"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskFiltersByState"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tasksByState"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filters"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filters"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<TasksByStateQuery, TasksByStateQueryVariables>;
 export const TaskDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"task"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"task"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]} as unknown as DocumentNode<TaskQuery, TaskQueryVariables>;

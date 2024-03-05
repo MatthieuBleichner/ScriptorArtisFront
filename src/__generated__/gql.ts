@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query GetStates {\n    states {\n      id\n      title\n      index\n    }\n  }\n": types.GetStatesDocument,
-    "\n  query tasksByState($id: Int!) {\n    tasksByState(id: $id) {\n      id\n    }\n  }\n": types.TasksByStateDocument,
+    "\n  query tasksByState($filters: TaskFiltersByState!) {\n    tasksByState(filters: $filters) {\n      id\n    }\n  }\n": types.TasksByStateDocument,
     "\n  query task($id: Int!) {\n    task(id: $id) {\n      id\n      title\n      description\n    }\n  }\n": types.TaskDocument,
 };
 
@@ -39,7 +39,7 @@ export function gql(source: "\n  query GetStates {\n    states {\n      id\n    
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query tasksByState($id: Int!) {\n    tasksByState(id: $id) {\n      id\n    }\n  }\n"): (typeof documents)["\n  query tasksByState($id: Int!) {\n    tasksByState(id: $id) {\n      id\n    }\n  }\n"];
+export function gql(source: "\n  query tasksByState($filters: TaskFiltersByState!) {\n    tasksByState(filters: $filters) {\n      id\n    }\n  }\n"): (typeof documents)["\n  query tasksByState($filters: TaskFiltersByState!) {\n    tasksByState(filters: $filters) {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

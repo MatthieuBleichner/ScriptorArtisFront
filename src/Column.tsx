@@ -12,8 +12,8 @@ interface ColumnProps {
 }
 
 const GET_TASKS = gql(/* GraphQL */ `
-  query tasksByState($id: Int!) {
-    tasksByState(id: $id) {
+  query tasksByState($filters: TaskFiltersByState!) {
+    tasksByState(filters: $filters) {
       id
     }
   }
@@ -36,7 +36,9 @@ function Column({ data }: ColumnProps): JSX.Element {
 
   const { loading, data: tasks } = useQuery(GET_TASKS, {
     variables: {
-      id: data.id,
+      filters: {
+        stateId: data.id,
+      },
     },
   });
 
