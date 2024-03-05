@@ -1,5 +1,5 @@
 {
-    "To Do": "A faire",
-    "Ongoing": "En cours",
+    "ToDo": "A faire",
+    "InProgress": "En cours",
     "Done": "Terminé"
 }
