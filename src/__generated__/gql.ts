@@ -13,9 +13,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  mutation UpdateTask($input: updateTaskInput!) {\n    updateTask(input: $input) {\n      id\n      title\n      description\n      state {\n        id\n      }\n    }\n  }\n": types.UpdateTaskDocument,
     "\n  query GetStates {\n    states {\n      id\n      title\n      index\n    }\n  }\n": types.GetStatesDocument,
+    "\n  query GetFeaturedTasks($filter: TaskFilters!) {\n    featuredTasks(filter: $filter) {\n      id\n      state {\n        id\n      }\n    }\n  }\n": types.GetFeaturedTasksDocument,
     "\n  query tasksByState($filters: TaskFiltersByState!) {\n    tasksByState(filters: $filters) {\n      id\n    }\n  }\n": types.TasksByStateDocument,
-    "\n  query task($id: Int!) {\n    task(id: $id) {\n      id\n      title\n      description\n    }\n  }\n": types.TaskDocument,
+    "\n  query task($id: Int!) {\n    task(id: $id) {\n      id\n      title\n      description\n      priority\n      date\n      owner {\n        firstName\n        lastName\n      }\n    }\n  }\n": types.TaskDocument,
 };
 
 /**
@@ -35,7 +37,15 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  mutation UpdateTask($input: updateTaskInput!) {\n    updateTask(input: $input) {\n      id\n      title\n      description\n      state {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateTask($input: updateTaskInput!) {\n    updateTask(input: $input) {\n      id\n      title\n      description\n      state {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  query GetStates {\n    states {\n      id\n      title\n      index\n    }\n  }\n"): (typeof documents)["\n  query GetStates {\n    states {\n      id\n      title\n      index\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetFeaturedTasks($filter: TaskFilters!) {\n    featuredTasks(filter: $filter) {\n      id\n      state {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetFeaturedTasks($filter: TaskFilters!) {\n    featuredTasks(filter: $filter) {\n      id\n      state {\n        id\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -43,7 +53,7 @@ export function gql(source: "\n  query tasksByState($filters: TaskFiltersByState
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query task($id: Int!) {\n    task(id: $id) {\n      id\n      title\n      description\n    }\n  }\n"): (typeof documents)["\n  query task($id: Int!) {\n    task(id: $id) {\n      id\n      title\n      description\n    }\n  }\n"];
+export function gql(source: "\n  query task($id: Int!) {\n    task(id: $id) {\n      id\n      title\n      description\n      priority\n      date\n      owner {\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  query task($id: Int!) {\n    task(id: $id) {\n      id\n      title\n      description\n      priority\n      date\n      owner {\n        firstName\n        lastName\n      }\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
