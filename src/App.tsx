@@ -5,7 +5,7 @@ import Column from "./Column";
 // import { columns as initialColumnsData } from "./initialData";
 import { useQuery, useMutation } from "@apollo/client";
 import { gql } from "../src/__generated__/gql";
-// import { type Task } from "../src/__generated__/graphql";
+import { type Task as ITask } from "../src/__generated__/graphql";
 import { DragDropContext } from "react-beautiful-dnd";
 import TaskCreator from "./TaskCreator";
 // Define mutation
@@ -142,6 +142,19 @@ function App(): JSX.Element {
     setColumns(updatedColumns);
   }, []);
 
+  const onTaskCreated = (task: ITask): void => {
+    console.log("On task created", task);
+    if (task.state === null || task.state === undefined) return;
+    const columnId: number = task.state.id;
+    console.log("On task created", columnId, columns);
+    if (columns === undefined) return;
+    const updatedColumns = {
+      ...columns,
+      [columnId]: [...columns[columnId], task.id],
+    };
+    setColumns(updatedColumns);
+  };
+
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -155,7 +168,7 @@ function App(): JSX.Element {
             backgroundColor: "white",
           }}
         >
-          <TaskCreator />
+          <TaskCreator onTaskCreated={onTaskCreated} />
         </div>
         <DragDropContext
           // onDragStart={() => {

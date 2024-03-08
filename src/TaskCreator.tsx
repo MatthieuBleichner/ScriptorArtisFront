@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Priority } from "../src/__generated__/graphql";
+import { Priority, type Task as ITask } from "../src/__generated__/graphql";
 import AddCircle from "@mui/icons-material/AddCircle";
 import { IconButton } from "@mui/material";
 import { useMutation, useQuery } from "@apollo/client";
@@ -17,6 +17,9 @@ const CREATE_TASK = gql(/* GraphQL */ `
       id
       title
       description
+      state {
+        id
+      }
     }
   }
 `);
@@ -32,7 +35,7 @@ const GET_ALL_USERS = gql(/* GraphQL */ `
 `);
 
 interface TaskCreatorProps {
-  onTaskCreated?: () => void;
+  onTaskCreated?: (task: ITask) => void;
 }
 
 function TaskCreator({ onTaskCreated }: TaskCreatorProps): JSX.Element {
@@ -62,7 +65,6 @@ function TaskCreator({ onTaskCreated }: TaskCreatorProps): JSX.Element {
   };
 
   const onDateChanged = (value: Date | null): void => {
-    console.log("date", value);
     if (value !== null) setDate(value.toISOString());
   };
 
@@ -79,7 +81,12 @@ function TaskCreator({ onTaskCreated }: TaskCreatorProps): JSX.Element {
       },
     })
       .then((res) => {
-        onTaskCreated?.();
+        if (
+          res?.data?.createTask !== null &&
+          res?.data?.createTask !== undefined
+        ) {
+          onTaskCreated?.(res?.data?.createTask as ITask);
+        }
       })
       .catch(() => {});
   };
