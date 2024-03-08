@@ -9,7 +9,7 @@ import { useQuery } from "@apollo/client";
 import { gql } from "../src/__generated__/gql";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-// import Icon from "@mui/material/Icon";
+
 interface ITaskProps {
   id: number;
   index: number;
@@ -46,6 +46,9 @@ function Item({
   priority,
   date,
 }: ItemProps): JSX.Element {
+  const formatdDate: Date | null =
+    date !== null && date !== undefined ? new Date(date) : null;
+
   return (
     <ListItem
       // alignItems="center"
@@ -65,14 +68,20 @@ function Item({
         secondary={
           <React.Fragment>
             <Typography
-              sx={{ display: "inline" }}
+              sx={{ display: "inline", paddingRight: 3 }}
               component="span"
               variant="body2"
               color="text.primary"
             >
               {priority}
             </Typography>
-            {date}
+            {formatdDate !== null
+              ? formatdDate.toLocaleDateString("fr", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                })
+              : null}
           </React.Fragment>
         }
       />

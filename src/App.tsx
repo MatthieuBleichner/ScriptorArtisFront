@@ -7,7 +7,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { gql } from "../src/__generated__/gql";
 // import { type Task } from "../src/__generated__/graphql";
 import { DragDropContext } from "react-beautiful-dnd";
-
+import TaskCreator from "./TaskCreator";
 // Define mutation
 const UPDATE_TASK = gql(/* GraphQL */ `
   mutation UpdateTask($input: updateTaskInput!) {
@@ -53,6 +53,7 @@ function App(): JSX.Element {
     variables: {
       filter: {},
     },
+    // pollInterval: 500,
   });
   const [updateTask] = useMutation(UPDATE_TASK);
   console.log("=======> loading", loading, "error", error, "data", data);
@@ -146,6 +147,16 @@ function App(): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
+        <div
+          style={{
+            display: "flex",
+            width: 1110,
+            flexDirection: "row",
+            backgroundColor: "white",
+          }}
+        >
+          <TaskCreator />
+        </div>
         <DragDropContext
           // onDragStart={() => {
           //   console.log("onDragStart");
