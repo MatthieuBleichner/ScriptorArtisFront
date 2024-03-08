@@ -5,9 +5,13 @@ import Column from "./components/Column";
 // import { columns as initialColumnsData } from "./initialData";
 import { useQuery, useMutation } from "@apollo/client";
 import { gql } from "../src/__generated__/gql";
-import { type Task as ITask } from "../src/__generated__/graphql";
+import {
+  type Task as ITask,
+  type TaskFilters,
+} from "../src/__generated__/graphql";
 import { DragDropContext } from "react-beautiful-dnd";
 import TaskCreator from "./components/TaskCreator";
+import TaskSelector from "./components/TaskSelector";
 // Define mutation
 const UPDATE_TASK = gql(/* GraphQL */ `
   mutation UpdateTask($input: updateTaskInput!) {
@@ -56,21 +60,25 @@ const GET_ALL_TASKS = gql(/* GraphQL */ `
 
 function App(): JSX.Element {
   const { loading, error, data } = useQuery(GET_STATES, {});
-  const {
-    // loading: tasksLoading,
-    // error: tasksError,
-    data: tasksData,
-  } = useQuery(GET_ALL_TASKS, {
-    variables: {
-      filter: {},
-    },
-    // pollInterval: 500,
-  });
+
   const [updateTask] = useMutation(UPDATE_TASK);
   const [deleteTask] = useMutation(DELETE_TASK);
   console.log("=======> loading", loading, "error", error, "data", data);
 
   const [columns, setColumns] = useState<Record<number, number[]>>();
+  const [fileringCritria, setFilteringCriteria] = useState<TaskFilters>({});
+
+  const {
+    // loading: tasksLoading,
+    // error: tasksError,
+    data: tasksData,
+    refetch,
+  } = useQuery(GET_ALL_TASKS, {
+    variables: {
+      filter: { ...fileringCritria },
+    },
+    // pollInterval: 500,
+  });
 
   useEffect(() => {
     console.log("tasks have changed", tasksData);
@@ -196,12 +204,34 @@ function App(): JSX.Element {
         <div
           style={{
             display: "flex",
-            width: 1110,
+            width: 1090,
             flexDirection: "row",
             backgroundColor: "white",
+            borderRadius: 2,
+            padding: 10,
           }}
         >
           <TaskCreator onTaskCreated={onTaskCreated} />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            width: 1090,
+            flexDirection: "row",
+            backgroundColor: "white",
+            marginTop: 5,
+            borderRadius: 2,
+            padding: 10,
+          }}
+        >
+          <TaskSelector
+            onApplyFilters={(filters: TaskFilters) => {
+              setFilteringCriteria(filters);
+              refetch()
+                .then((res) => {})
+                .catch(() => {});
+            }}
+          />
         </div>
         <DragDropContext
           // onDragStart={() => {

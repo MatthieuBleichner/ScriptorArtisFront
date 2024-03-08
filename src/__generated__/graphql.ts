@@ -110,9 +110,11 @@ export type Task = {
 
 export type TaskFilters = {
   date?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   ownerId?: InputMaybe<Scalars['Int']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
-  state?: InputMaybe<Scalars['Int']['input']>;
+  stateId?: InputMaybe<Scalars['Int']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type TaskFiltersByState = {

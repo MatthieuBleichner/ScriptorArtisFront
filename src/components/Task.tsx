@@ -39,7 +39,6 @@ function Task({ id, index, deleteTask }: ITaskProps): JSX.Element {
     },
   });
 
-  console.log("deleteTask", deleteTask);
   if (loading) return <p>Loading...</p>;
 
   const onDeletePressed = (): void => {
@@ -76,7 +75,7 @@ function Task({ id, index, deleteTask }: ITaskProps): JSX.Element {
             <ListItemAvatar>
               <Avatar
                 alt={`${data?.task?.owner?.firstName} ${data?.task?.owner?.lastName}`}
-                // src={ownerSrc}
+                src={"path"}
                 sx={{ bgcolor: "#81c784" }}
               />
             </ListItemAvatar>
