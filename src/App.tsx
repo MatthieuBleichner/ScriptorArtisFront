@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import "./i18n/config";
-import Column from "./Column";
+import Column from "./components/Column";
 // import { columns as initialColumnsData } from "./initialData";
 import { useQuery, useMutation } from "@apollo/client";
 import { gql } from "../src/__generated__/gql";
 import { type Task as ITask } from "../src/__generated__/graphql";
 import { DragDropContext } from "react-beautiful-dnd";
-import TaskCreator from "./TaskCreator";
+import TaskCreator from "./components/TaskCreator";
 // Define mutation
 const UPDATE_TASK = gql(/* GraphQL */ `
   mutation UpdateTask($input: updateTaskInput!) {
@@ -15,6 +15,17 @@ const UPDATE_TASK = gql(/* GraphQL */ `
       id
       title
       description
+      state {
+        id
+      }
+    }
+  }
+`);
+
+const DELETE_TASK = gql(/* GraphQL */ `
+  mutation DeleteTask($input: deleteTaskInput!) {
+    deleteTask(input: $input) {
+      id
       state {
         id
       }
@@ -56,6 +67,7 @@ function App(): JSX.Element {
     // pollInterval: 500,
   });
   const [updateTask] = useMutation(UPDATE_TASK);
+  const [deleteTask] = useMutation(DELETE_TASK);
   console.log("=======> loading", loading, "error", error, "data", data);
 
   const [columns, setColumns] = useState<Record<number, number[]>>();
@@ -83,9 +95,30 @@ function App(): JSX.Element {
       setColumns(tasksByColumns);
   }, [tasksData]);
 
-  // console.log("columns", columns);
-
-  // const [refresh, setRefresh] = React.useState(false);
+  const onDeleteTask = (id: number): void => {
+    deleteTask({
+      variables: {
+        input: {
+          id,
+        },
+      },
+    })
+      .then((res) => {
+        const deletedTask = res?.data?.deleteTask;
+        if (deletedTask?.state === null || deletedTask?.state === undefined)
+          return;
+        const columnId: number = deletedTask.state.id;
+        if (columns === undefined) return;
+        const updatedColumns = {
+          ...columns,
+          [columnId]: columns[columnId].filter((taskId) => {
+            return taskId !== deletedTask.id;
+          }),
+        };
+        setColumns(updatedColumns);
+      })
+      .catch(() => {});
+  };
 
   const onDragEnd = useCallback((result: any): void => {
     const destination = result.destination;
@@ -185,6 +218,7 @@ function App(): JSX.Element {
                 data={column}
                 key={column.id}
                 tasksIds={columns?.[column.id]}
+                deleteTask={onDeleteTask}
               />
             ))}
           </div>

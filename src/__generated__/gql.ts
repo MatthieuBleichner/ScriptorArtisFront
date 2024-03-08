@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation UpdateTask($input: updateTaskInput!) {\n    updateTask(input: $input) {\n      id\n      title\n      description\n      state {\n        id\n      }\n    }\n  }\n": types.UpdateTaskDocument,
+    "\n  mutation DeleteTask($input: deleteTaskInput!) {\n    deleteTask(input: $input) {\n      id\n      state {\n        id\n      }\n    }\n  }\n": types.DeleteTaskDocument,
     "\n  query GetStates {\n    states {\n      id\n      title\n      index\n    }\n  }\n": types.GetStatesDocument,
     "\n  query GetFeaturedTasks($filter: TaskFilters!) {\n    featuredTasks(filter: $filter) {\n      id\n      state {\n        id\n      }\n    }\n  }\n": types.GetFeaturedTasksDocument,
     "\n  query task($id: Int!) {\n    task(id: $id) {\n      id\n      title\n      description\n      priority\n      date\n      owner {\n        firstName\n        lastName\n      }\n    }\n  }\n": types.TaskDocument,
@@ -39,6 +40,10 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation UpdateTask($input: updateTaskInput!) {\n    updateTask(input: $input) {\n      id\n      title\n      description\n      state {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateTask($input: updateTaskInput!) {\n    updateTask(input: $input) {\n      id\n      title\n      description\n      state {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation DeleteTask($input: deleteTaskInput!) {\n    deleteTask(input: $input) {\n      id\n      state {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteTask($input: deleteTaskInput!) {\n    deleteTask(input: $input) {\n      id\n      state {\n        id\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

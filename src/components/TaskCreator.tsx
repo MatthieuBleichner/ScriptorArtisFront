@@ -5,11 +5,11 @@ import Stack from "@mui/material/Stack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Priority, type Task as ITask } from "../src/__generated__/graphql";
+import { Priority, type Task as ITask } from "../__generated__/graphql";
 import AddCircle from "@mui/icons-material/AddCircle";
 import { IconButton } from "@mui/material";
 import { useMutation, useQuery } from "@apollo/client";
-import { gql } from "../src/__generated__/gql";
+import { gql } from "../__generated__/gql";
 
 const CREATE_TASK = gql(/* GraphQL */ `
   mutation CreateTask($input: createTaskInput!) {

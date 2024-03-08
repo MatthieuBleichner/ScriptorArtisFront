@@ -2,7 +2,7 @@ import React /*, { useEffect } */ from "react";
 import Task from "./Task";
 // import { useQuery } from "@apollo/client";
 // import { gql } from "../src/__generated__/gql";
-import { type State } from "../src/__generated__/graphql";
+import { type State } from "../__generated__/graphql";
 import { useTranslation } from "react-i18next";
 import { Droppable } from "react-beautiful-dnd";
 import List from "@mui/material/List";
@@ -11,6 +11,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 interface ColumnProps {
   data: State;
   tasksIds?: number[];
+  deleteTask?: (id: number) => void;
 }
 
 // const GET_TASKS = gql(/* GraphQL */ `
@@ -21,7 +22,7 @@ interface ColumnProps {
 //   }
 // `);
 
-function Column({ data, tasksIds }: ColumnProps): JSX.Element {
+function Column({ data, tasksIds, deleteTask }: ColumnProps): JSX.Element {
   const { t } = useTranslation();
 
   // const { loading, data: tasks } = useQuery(GET_TASKS, {
@@ -48,7 +49,14 @@ function Column({ data, tasksIds }: ColumnProps): JSX.Element {
           {tasksIds?.map((taskId, index) => {
             // if (task === undefined || task?.id === undefined) return null;
             // return <Task key={task?.id} id={task?.id} index={index} />;
-            return <Task key={taskId} id={taskId} index={index} />;
+            return (
+              <Task
+                key={taskId}
+                id={taskId}
+                index={index}
+                deleteTask={deleteTask}
+              />
+            );
           })}
           {provided.placeholder}
         </List>
