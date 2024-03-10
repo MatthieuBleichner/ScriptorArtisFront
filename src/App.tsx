@@ -199,8 +199,8 @@ function App(): JSX.Element {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="App" style={{ color: "#a9a9a9" }}>
+      <header className="App-header" style={{ backgroundColor: "#c5c5c5" }}>
         <div
           style={{
             display: "flex",

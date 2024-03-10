@@ -40,7 +40,7 @@ function Column({ data, tasksIds, deleteTask }: ColumnProps): JSX.Element {
     <Droppable droppableId={`${data.id}`}>
       {(provided) => (
         <List
-          sx={{ width: 360, maxWidth: 360, bgcolor: "#90caf9", margin: 1 }}
+          sx={{ width: 360, maxWidth: 360, bgcolor: "#dcdcdc", margin: 1 }}
           subheader={<ListSubheader>{t(data.title)}</ListSubheader>}
           ref={provided.innerRef}
           {...provided.droppableProps}
