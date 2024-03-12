@@ -4,9 +4,25 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { createHttpLink } from "apollo-link-http";
+import { setContext } from "apollo-link-context";
+import Cookies from "js-cookie";
+
+const httpLink = createHttpLink({ uri: "http://localhost:4000/" });
+
+const authLink = setContext((_, { headers }) => {
+  const token = Cookies.get("token");
+
+  return {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${token}`,
+    },
+  };
+});
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/",
+  link: authLink.concat(httpLink) as any,
   cache: new InMemoryCache(),
 });
 
