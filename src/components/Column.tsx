@@ -1,7 +1,5 @@
-import React /*, { useEffect } */ from "react";
+import React from "react";
 import Task from "./Task";
-// import { useQuery } from "@apollo/client";
-// import { gql } from "../src/__generated__/gql";
 import { type State } from "../__generated__/graphql";
 import { useTranslation } from "react-i18next";
 import { Droppable } from "react-beautiful-dnd";
@@ -14,27 +12,11 @@ interface ColumnProps {
   deleteTask?: (id: number) => void;
 }
 
-// const GET_TASKS = gql(/* GraphQL */ `
-//   query tasksByState($filters: TaskFiltersByState!) {
-//     tasksByState(filters: $filters) {
-//       id
-//     }
-//   }
-// `);
-
+/**
+ * Dispaly a vertical components containing tasks
+ */
 function Column({ data, tasksIds, deleteTask }: ColumnProps): JSX.Element {
   const { t } = useTranslation();
-
-  // const { loading, data: tasks } = useQuery(GET_TASKS, {
-  //   variables: {
-  //     filters: {
-  //       stateId: data.id,
-  //     },
-  //   },
-  // });
-
-  console.log("inside column", data, tasksIds);
-  // if (loading) return <p>Loading...</p>;
 
   return (
     <Droppable droppableId={`${data.id}`}>
@@ -45,10 +27,7 @@ function Column({ data, tasksIds, deleteTask }: ColumnProps): JSX.Element {
           ref={provided.innerRef}
           {...provided.droppableProps}
         >
-          {/* {tasks?.tasksByState?.map((task, index) => { */}
           {tasksIds?.map((taskId, index) => {
-            // if (task === undefined || task?.id === undefined) return null;
-            // return <Task key={task?.id} id={task?.id} index={index} />;
             return (
               <Task
                 key={taskId}

@@ -1,5 +1,15 @@
 {
     "ToDo": "To Do",
     "InProgress": "In Progress",
-    "Done": "Done"
+    "Done": "Done",
+    "Authentication": {
+        "Title": "Login",
+        "EmailError" : "Please enter your email",
+        "EmailNotValid": "Please enter a valid email",
+        "MissingPassword": "Please enter a password",
+        "InvalidMailOrPassword": "Invalid mail or password",
+        "EnterMail": "Enter your email here",
+        "EnterPassword": "Enter your password here",
+        "Login" : "Login"
+    }
 }

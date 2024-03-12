@@ -1,5 +1,15 @@
 {
     "ToDo": "A faire",
     "InProgress": "En cours",
-    "Done": "Terminé"
+    "Done": "Terminé",
+    "Authentication": {
+        "Title": "Connexion",
+        "EmailError" : "Merci d'entrer votre email",
+        "EmailNotValid": "Email non valide",
+        "MissingPassword": "Merci d'entrer votre mot de passe",
+        "InvalidMailOrPassword": "email ou mot de passe non valide",
+        "EnterMail": "mail@mail.com",
+        "EnterPassword": "mot de passe",
+        "Login" : "Se connecter"
+    }
 }

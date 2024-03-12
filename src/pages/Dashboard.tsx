@@ -10,7 +10,6 @@ import {
 import { DragDropContext } from "react-beautiful-dnd";
 import TaskCreator from "../components/TaskCreator";
 import TaskSelector from "../components/TaskSelector";
-import Cookies from "js-cookie";
 
 // Define GraphQl functions
 
@@ -61,13 +60,10 @@ const GET_ALL_TASKS = gql(/* GraphQL */ `
 
 // Define Dashboard page
 function Dashboard(): JSX.Element {
-  const { loading, error, data } = useQuery(GET_STATES, {});
-
-  console.log(" @@@@@@@@@@@@@@@@@@@@@@@@@ Cookies", Cookies.get("token"));
+  const { loading, data } = useQuery(GET_STATES, {});
 
   const [updateTask] = useMutation(UPDATE_TASK);
   const [deleteTask] = useMutation(DELETE_TASK);
-  console.log("=======> loading", loading, "error", error, "data", data);
 
   const [columns, setColumns] = useState<Record<number, number[]>>();
   const [fileringCritria, setFilteringCriteria] = useState<TaskFilters>({});
@@ -177,10 +173,8 @@ function Dashboard(): JSX.Element {
   );
 
   const onTaskCreated = (task: ITask): void => {
-    console.log("On task created", task);
     if (task.state === null || task.state === undefined) return;
     const columnId: number = task.state.id;
-    console.log("On task created", columnId, columns);
     if (columns === undefined) return;
     const updatedColumns = {
       ...columns,
@@ -198,9 +192,10 @@ function Dashboard(): JSX.Element {
         style={{ backgroundColor: "#c5c5c5" }}
       >
         <div
+          className="Dashboard-selector"
           style={{
             display: "flex",
-            width: 1090,
+            width: 1110,
             flexDirection: "row",
             backgroundColor: "white",
             borderRadius: 2,
@@ -212,7 +207,7 @@ function Dashboard(): JSX.Element {
         <div
           style={{
             display: "flex",
-            width: 1090,
+            width: 1110,
             flexDirection: "row",
             backgroundColor: "white",
             marginTop: 5,

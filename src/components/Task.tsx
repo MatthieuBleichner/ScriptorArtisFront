@@ -60,7 +60,6 @@ function Task({ id, index, deleteTask }: ITaskProps): JSX.Element {
           {...provided.dragHandleProps}
         >
           <ListItem
-            // alignItems="center"
             secondaryAction={
               <IconButton
                 edge="end"

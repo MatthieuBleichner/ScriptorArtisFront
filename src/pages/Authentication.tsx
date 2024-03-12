@@ -3,12 +3,7 @@ import "./Authentication.css";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { gql } from "../../src/__generated__/gql";
-// import {
-//   type Task as ITask,
-//   type TaskFilters,
-// } from "../../src/__generated__/graphql";
-
-// import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const LOGIN = gql(/* GraphQL */ `
   mutation login($input: loginInput!) {
@@ -17,6 +12,8 @@ const LOGIN = gql(/* GraphQL */ `
 `);
 
 const Login = (): JSX.Element => {
+  const { t } = useTranslation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -25,27 +22,23 @@ const Login = (): JSX.Element => {
   const [login] = useMutation(LOGIN);
   const navigate = useNavigate();
 
-  // const navigate = useNavigate();
-
   const onButtonClick = (): void => {
-    console.log("onButtonClick");
-    // Set initial error values to empty
     setEmailError("");
     setPasswordError("");
 
     // Check if the user has entered both fields correctly
     if (email === "") {
-      setEmailError("Please enter your email");
+      setEmailError(t("Authentication.EmailError"));
       return;
     }
 
     if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      setEmailError("Please enter a valid email");
+      setEmailError(t("Authentication.EmailNotValid"));
       return;
     }
 
     if (password === "") {
-      setPasswordError("Please enter a password");
+      setPasswordError(t("Authentication.MissingPassword"));
       return;
     }
 
@@ -66,24 +59,24 @@ const Login = (): JSX.Element => {
           document.cookie = "token=" + res?.data?.login;
           navigate("/Dashboard");
         } else {
-          setPasswordError("Invalid mail or password");
+          setPasswordError(t("Authentication.InvalidMailOrPassword"));
         }
       })
       .catch(() => {
-        setPasswordError("Wrong mail or password");
+        setPasswordError(t("Authentication.InvalidMailOrPassword"));
       });
   };
 
   return (
     <div className={"mainContainer"}>
       <div className={"titleContainer"}>
-        <div>Login</div>
+        <div>{t("Authentication.Title")}</div>
       </div>
       <br />
       <div className={"inputContainer"}>
         <input
           value={email}
-          placeholder="Enter your email here"
+          placeholder={t("Authentication.EnterMail")}
           onChange={(ev) => {
             setEmail(ev.target.value);
           }}
@@ -96,7 +89,7 @@ const Login = (): JSX.Element => {
         <input
           type={"password"}
           value={password}
-          placeholder="Enter your password here"
+          placeholder={t("Authentication.EnterPassword")}
           onChange={(ev) => {
             setPassword(ev.target.value);
           }}
@@ -110,7 +103,7 @@ const Login = (): JSX.Element => {
           className={"inputButton"}
           type="button"
           onClick={onButtonClick}
-          value={"Log in"}
+          value={t("Authentication.Login")}
         />
       </div>
     </div>

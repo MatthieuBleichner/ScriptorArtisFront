@@ -46,11 +46,7 @@ function TaskCreator({ onTaskCreated }: TaskCreatorProps): JSX.Element {
 
   const [createTask] = useMutation(CREATE_TASK);
 
-  const {
-    // loading: tasksLoading,
-    // error: tasksError,
-    data: usersData,
-  } = useQuery(GET_ALL_USERS, {});
+  const { data: usersData } = useQuery(GET_ALL_USERS, {});
 
   const onTitleChanged = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTitle(e.target.value);
@@ -69,6 +65,7 @@ function TaskCreator({ onTaskCreated }: TaskCreatorProps): JSX.Element {
   };
 
   const onCreateTask = (): void => {
+    console.log("onCreateTask", userId);
     createTask({
       variables: {
         input: {
@@ -93,13 +90,6 @@ function TaskCreator({ onTaskCreated }: TaskCreatorProps): JSX.Element {
 
   return (
     <Stack
-      //   style={{
-      //     width: "100%",
-      //     flexDirection: "row",
-      //     borderWidth: 1,
-      //     alignItems: "flex-start",
-      //     justifyContent: "space-around",
-      //   }}
       direction="row"
       alignItems="center"
       justifyContent="center"
