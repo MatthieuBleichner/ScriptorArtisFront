@@ -10,6 +10,8 @@ import { gql } from "../__generated__/gql";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 
+const AVATAR_COLORS = ["#81c784", "#265073", "#2D9596", "#D67BFF"];
+
 interface ITaskProps {
   id: number;
   index: number;
@@ -75,7 +77,13 @@ function Task({ id, index, deleteTask }: ITaskProps): JSX.Element {
               <Avatar
                 alt={`${data?.task?.owner?.firstName} ${data?.task?.owner?.lastName}`}
                 src={"path"}
-                sx={{ bgcolor: "#81c784" }}
+                sx={{
+                  bgcolor:
+                    AVATAR_COLORS[
+                      (data?.task?.owner?.lastName?.length ?? 0) %
+                        AVATAR_COLORS.length
+                    ],
+                }}
               />
             </ListItemAvatar>
             <ListItemText

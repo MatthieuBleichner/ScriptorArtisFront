@@ -18,6 +18,7 @@ interface ColumnProps {
 function Column({ data, tasksIds, deleteTask }: ColumnProps): JSX.Element {
   const { t } = useTranslation();
 
+  console.log("Column render", tasksIds);
   return (
     <Droppable droppableId={`${data.id}`}>
       {(provided) => (

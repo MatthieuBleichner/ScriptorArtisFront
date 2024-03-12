@@ -3,13 +3,19 @@
     "InProgress": "In Progress",
     "Done": "Done",
     "Authentication": {
-        "Title": "Login",
+        "Title": "Tasks Manager",
         "EmailError" : "Please enter your email",
         "EmailNotValid": "Please enter a valid email",
         "MissingPassword": "Please enter a password",
         "InvalidMailOrPassword": "Invalid mail or password",
         "EnterMail": "Enter your email here",
         "EnterPassword": "Enter your password here",
-        "Login" : "Login"
+        "EnterFirstName": "Enter your first name here",
+        "EnterLastName": "Enter your last name here",
+        "firstNamePlaceHolder": "first Name",
+        "lastNamePlaceHolder": "last Name",
+        "Login" : "Login",
+        "Signin" : "Signin",
+        "Validate" : "Validate"
     }
 }

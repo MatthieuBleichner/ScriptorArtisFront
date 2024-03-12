@@ -17,6 +17,7 @@ const documents = {
     "\n  mutation CreateTask($input: createTaskInput!) {\n    createTask(input: $input) {\n      id\n      title\n      description\n      state {\n        id\n      }\n    }\n  }\n": types.CreateTaskDocument,
     "\n  query users {\n    users {\n      id\n      firstName\n      lastName\n    }\n  }\n": types.UsersDocument,
     "\n  mutation login($input: loginInput!) {\n    login(input: $input)\n  }\n": types.LoginDocument,
+    "\n  mutation signin($input: registerInput!) {\n    register(input: $input) {\n      email\n      password\n    }\n  }\n": types.SigninDocument,
     "\n  mutation UpdateTask($input: updateTaskInput!) {\n    updateTask(input: $input) {\n      id\n      title\n      description\n      state {\n        id\n      }\n    }\n  }\n": types.UpdateTaskDocument,
     "\n  mutation DeleteTask($input: deleteTaskInput!) {\n    deleteTask(input: $input) {\n      id\n      state {\n        id\n      }\n    }\n  }\n": types.DeleteTaskDocument,
     "\n  query GetStates {\n    states {\n      id\n      title\n      index\n    }\n  }\n": types.GetStatesDocument,
@@ -53,6 +54,10 @@ export function gql(source: "\n  query users {\n    users {\n      id\n      fir
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation login($input: loginInput!) {\n    login(input: $input)\n  }\n"): (typeof documents)["\n  mutation login($input: loginInput!) {\n    login(input: $input)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation signin($input: registerInput!) {\n    register(input: $input) {\n      email\n      password\n    }\n  }\n"): (typeof documents)["\n  mutation signin($input: registerInput!) {\n    register(input: $input) {\n      email\n      password\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

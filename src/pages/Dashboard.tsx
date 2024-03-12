@@ -75,6 +75,7 @@ function Dashboard(): JSX.Element {
   });
 
   useEffect(() => {
+    console.log("tasksData has changed", tasksData);
     // if tasks have changed then update columns
     const tasksByColumns: Record<number, number[]> | undefined =
       tasksData?.featuredTasks?.reduce<Record<number, number[]>>(
@@ -157,20 +158,25 @@ function Dashboard(): JSX.Element {
         Record<number, number[]>
       >((acc, columnId) => {
         const newTaskIds = columns[parseInt(columnId)];
+        console.log("old tasks of column", columnId, newTaskIds);
         if (columnId === sourceColumn) {
           newTaskIds.splice(sourceIndex, 1);
         }
         if (columnId === destinationColumn) {
           newTaskIds.splice(destinationIndex, 0, parseInt(draggableId));
         }
+        console.log("new tasks of column", columnId, newTaskIds);
         acc[parseInt(columnId)] = newTaskIds;
         return acc;
       }, {});
 
+      console.log("updatedColumns", updatedColumns);
       setColumns(updatedColumns);
     },
     [columns],
   );
+
+  console.log("columns", columns);
 
   const onTaskCreated = (task: ITask): void => {
     if (task.state === null || task.state === undefined) return;
@@ -218,6 +224,7 @@ function Dashboard(): JSX.Element {
           <TaskSelector
             onApplyFilters={(filters: TaskFilters) => {
               setFilteringCriteria(filters);
+              console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIII");
               refetch()
                 .then((res) => {})
                 .catch(() => {});

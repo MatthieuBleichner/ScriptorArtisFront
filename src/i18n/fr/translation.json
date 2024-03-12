@@ -3,13 +3,19 @@
     "InProgress": "En cours",
     "Done": "Terminé",
     "Authentication": {
-        "Title": "Connexion",
+        "Title": "Tasks Manager",
         "EmailError" : "Merci d'entrer votre email",
         "EmailNotValid": "Email non valide",
         "MissingPassword": "Merci d'entrer votre mot de passe",
         "InvalidMailOrPassword": "email ou mot de passe non valide",
         "EnterMail": "mail@mail.com",
         "EnterPassword": "mot de passe",
-        "Login" : "Se connecter"
+        "EnterFirstName": "Entrez votre prénom ici",
+        "EnterLastName": "Entrez votre nom ici",
+        "firstNamePlaceHolder": "prénom",
+        "lastNamePlaceHolder": "nom",
+        "Login" : "Se connecter",
+        "Signin" : "Inscription",
+        "Validate" : "Valider"
     }
 }
