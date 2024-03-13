@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Authentication.css";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { gql } from "../../src/__generated__/gql";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 const LOGIN = gql(/* GraphQL */ `
   mutation login($input: loginInput!) {
@@ -138,6 +139,13 @@ const Login = (): JSX.Element => {
         .catch(() => {});
     }
   };
+
+  const hasValidToken = Cookies.get("token") !== undefined;
+  useEffect(() => {
+    if (hasValidToken) {
+      navigate("/Dashboard");
+    }
+  }, [hasValidToken]);
 
   return (
     <div className={"mainContainer"}>
