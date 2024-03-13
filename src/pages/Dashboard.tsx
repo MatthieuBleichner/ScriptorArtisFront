@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import "./Dashboard.css";
 import Column from "../components/Column";
 import { useQuery, useMutation } from "@apollo/client";
@@ -60,7 +60,7 @@ const GET_ALL_TASKS = gql(/* GraphQL */ `
 
 // Define Dashboard page
 function Dashboard(): JSX.Element {
-  const { loading, data } = useQuery(GET_STATES, {});
+  const { loading, data: statesDate } = useQuery(GET_STATES, {});
 
   const [updateTask] = useMutation(UPDATE_TASK);
   const [deleteTask] = useMutation(DELETE_TASK);
@@ -74,9 +74,26 @@ function Dashboard(): JSX.Element {
     },
   });
 
+  const enableRefreshFromBackend = useRef(true);
   useEffect(() => {
-    console.log("tasksData has changed", tasksData);
     // if tasks have changed then update columns
+    // this should only be done after the first render
+    if (
+      !enableRefreshFromBackend.current ||
+      tasksData?.featuredTasks === undefined ||
+      tasksData?.featuredTasks?.length === 0 ||
+      statesDate?.states === undefined ||
+      statesDate?.states === null ||
+      statesDate?.states?.length === 0
+    )
+      return;
+
+    const initialTasksByColumns: Record<number, number[]> =
+      statesDate.states.reduce<Record<number, number[]>>((acc, state) => {
+        acc[state.id] = [];
+        return acc;
+      }, {});
+
     const tasksByColumns: Record<number, number[]> | undefined =
       tasksData?.featuredTasks?.reduce<Record<number, number[]>>(
         (acc, task) => {
@@ -88,39 +105,43 @@ function Dashboard(): JSX.Element {
           }
           return acc;
         },
-        {},
+        initialTasksByColumns,
       );
     if (tasksByColumns !== null && tasksByColumns !== undefined)
       setColumns(tasksByColumns);
+    enableRefreshFromBackend.current = false;
   }, [tasksData]);
 
   /**
    * onDeleteTask should be called after task deletion. It enables to reorder tasks in columns
    */
-  const onDeleteTask = (id: number): void => {
-    deleteTask({
-      variables: {
-        input: {
-          id,
+  const onDeleteTask = useCallback(
+    (id: number): void => {
+      deleteTask({
+        variables: {
+          input: {
+            id,
+          },
         },
-      },
-    })
-      .then((res) => {
-        const deletedTask = res?.data?.deleteTask;
-        if (deletedTask?.state === null || deletedTask?.state === undefined)
-          return;
-        const columnId: number = deletedTask.state.id;
-        if (columns === undefined) return;
-        const updatedColumns = {
-          ...columns,
-          [columnId]: columns[columnId].filter((taskId) => {
-            return taskId !== deletedTask.id;
-          }),
-        };
-        setColumns(updatedColumns);
       })
-      .catch(() => {});
-  };
+        .then((res) => {
+          const deletedTask = res?.data?.deleteTask;
+          if (deletedTask?.state === null || deletedTask?.state === undefined)
+            return;
+          const columnId: number = deletedTask.state.id;
+          if (columns === undefined) return;
+          const updatedColumns = {
+            ...columns,
+            [columnId]: columns[columnId].filter((taskId) => {
+              return taskId !== deletedTask.id;
+            }),
+          };
+          setColumns(updatedColumns);
+        })
+        .catch(() => {});
+    },
+    [columns],
+  );
 
   /**
    * onDragEnd should be called after task drag and drop. It enables to reorder tasks in columns
@@ -158,25 +179,20 @@ function Dashboard(): JSX.Element {
         Record<number, number[]>
       >((acc, columnId) => {
         const newTaskIds = columns[parseInt(columnId)];
-        console.log("old tasks of column", columnId, newTaskIds);
         if (columnId === sourceColumn) {
           newTaskIds.splice(sourceIndex, 1);
         }
         if (columnId === destinationColumn) {
           newTaskIds.splice(destinationIndex, 0, parseInt(draggableId));
         }
-        console.log("new tasks of column", columnId, newTaskIds);
         acc[parseInt(columnId)] = newTaskIds;
         return acc;
       }, {});
 
-      console.log("updatedColumns", updatedColumns);
       setColumns(updatedColumns);
     },
     [columns],
   );
-
-  console.log("columns", columns);
 
   const onTaskCreated = (task: ITask): void => {
     if (task.state === null || task.state === undefined) return;
@@ -224,7 +240,7 @@ function Dashboard(): JSX.Element {
           <TaskSelector
             onApplyFilters={(filters: TaskFilters) => {
               setFilteringCriteria(filters);
-              console.log("ICIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+              enableRefreshFromBackend.current = true;
               refetch()
                 .then((res) => {})
                 .catch(() => {});
@@ -233,7 +249,7 @@ function Dashboard(): JSX.Element {
         </div>
         <DragDropContext onDragEnd={onDragEnd}>
           <div style={{ display: "flex", flexDirection: "row" }}>
-            {data?.states?.map((column) => (
+            {statesDate?.states?.map((column) => (
               <Column
                 data={column}
                 key={column.id}
